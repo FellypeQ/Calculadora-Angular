@@ -31,6 +31,11 @@ export class CalculadoraComponent implements OnInit {
       ? (this.numero1 = this.concatenaNumero(this.numero1, caracter))
       : (this.numero2 = this.concatenaNumero(this.numero2, caracter));
   }
+  adicionaOperador(operador: string): void {
+    this.operador !== operador
+      ? (this.operador = operador)
+      : (this.operador = this.operador);
+  }
   concatenaNumero(numeroAtual: string, caracter: any): string {
     if (caracter === '0' && numeroAtual === '') {
       numeroAtual = '';
@@ -44,10 +49,6 @@ export class CalculadoraComponent implements OnInit {
     return numeroAtual + caracter;
   }
 
-  adicionaOperador(operador: string): void {
-    this.operador = operador;
-  }
-
   calculaResultado(): void {
     if (this.numero2 !== '') {
       this.resultado = this.calculadoraService.calcular(
@@ -56,6 +57,19 @@ export class CalculadoraComponent implements OnInit {
         this.operador
       );
     }
+  }
+
+  get display(): string {
+    if (this.resultado !== null) {
+      return this.resultado.toString();
+    }
+    if (this.numero2 !== '') {
+      return this.numero2;
+    }
+    if (this.operador !== '') {
+      return this.operador;
+    }
+    return this.numero1;
   }
 
   teste(): void {
