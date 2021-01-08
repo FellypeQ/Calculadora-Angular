@@ -15,12 +15,12 @@ export class CalculadoraComponent implements OnInit {
 
   constructor(private calculadoraService: CalculadoraService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.limpar();
   }
 
   limpar(): void {
-    this.numero1 = '';
+    this.numero1 = '0';
     this.numero2 = '';
     this.operador = '';
     this.resultado = null;
@@ -37,11 +37,14 @@ export class CalculadoraComponent implements OnInit {
       : (this.operador = this.operador);
   }
   concatenaNumero(numeroAtual: string, caracter: any): string {
-    if (caracter === '0' && numeroAtual === '') {
+    if (caracter === '0' && numeroAtual === '0') {
       numeroAtual = '';
     }
-    if (numeroAtual === '' && caracter === '.') {
+    if (numeroAtual === '0' && caracter === '.') {
       return '0.';
+    }
+    if (numeroAtual === '0') {
+      return caracter;
     }
     if (caracter === '.' && numeroAtual.indexOf('.') > -1) {
       return numeroAtual;
