@@ -8,8 +8,8 @@ import { CalculadoraService } from '../services/calculadora.service';
   styleUrls: ['./calculadora.component.css'],
 })
 export class CalculadoraComponent implements OnInit {
-  private numero1: number;
-  private numero2: number;
+  private numero1: string;
+  private numero2: string;
   private operador: string;
   private resultado: number;
 
@@ -20,25 +20,42 @@ export class CalculadoraComponent implements OnInit {
   }
 
   limpar(): void {
-    this.numero1 = 0;
-    this.numero2 = 0;
+    this.numero1 = '';
+    this.numero2 = '';
     this.operador = '';
-    this.resultado = 0;
+    this.resultado = null;
   }
 
-  adicionaNumero(numero: number): void {
-    this.operador === '' ? (this.numero1 = numero) : (this.numero2 = numero);
+  adicionaNumero(caracter: string): void {
+    this.operador === ''
+      ? (this.numero1 = this.concatenaNumero(this.numero1, caracter))
+      : (this.numero2 = this.concatenaNumero(this.numero2, caracter));
   }
+  concatenaNumero(numeroAtual: string, caracter: any): string {
+    if (caracter === '0' && numeroAtual === '') {
+      numeroAtual = '';
+    }
+    if (numeroAtual === '' && caracter === '.') {
+      return '0.';
+    }
+    if (caracter === '.' && numeroAtual.indexOf('.') > -1) {
+      return numeroAtual;
+    }
+    return numeroAtual + caracter;
+  }
+
   adicionaOperador(operador: string): void {
     this.operador = operador;
   }
 
   calculaResultado(): void {
-    this.resultado = this.calculadoraService.calcular(
-      this.numero1,
-      this.numero2,
-      this.operador
-    );
+    if (this.numero2 !== '') {
+      this.resultado = this.calculadoraService.calcular(
+        parseFloat(this.numero1),
+        parseFloat(this.numero2),
+        this.operador
+      );
+    }
   }
 
   teste(): void {
